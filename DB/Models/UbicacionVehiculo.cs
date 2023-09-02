@@ -13,8 +13,6 @@ namespace DB.Models
         private Vehiculo? Vehiculo { get; set; } = null!;
         public DateTime FechaUltimaUbicacion { get; set; }
 
-        private long? UbicacionVehiculoCoordenadasId=null!;
-
         private UbicacionVehiculoCoordenadas _UbicacionVehiculoCoordenadas;
 
         public UbicacionVehiculoCoordenadas UbicacionVehiculoCoordenadas
@@ -44,7 +42,7 @@ namespace DB.Models
             var historialUbicacion = new HistorialUbicacion
             {
                 FechaRegistro = FechaUltimaUbicacion,
-                Ubicacion = ubicacion
+                UbicacionVehiculoCoordenadas = ubicacion
             };
             historialUbicaciones.Add(historialUbicacion);
         }

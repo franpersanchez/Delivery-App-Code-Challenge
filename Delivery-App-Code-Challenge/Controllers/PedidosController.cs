@@ -3,6 +3,7 @@ using DB;
 using DB.Interfaces;
 using Delivery_App_Code_Challenge.DB.Models;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System.Data.Entity;
 
 namespace Delivery_App_Code_Challenge.Controllers
 {
@@ -15,19 +16,22 @@ namespace Delivery_App_Code_Challenge.Controllers
         private readonly IRepository<Cliente> _clienteRepository;
         private readonly IRepository<Vehiculo> _vehiculoRepository;
         private readonly IRepository<HistorialUbicacion> _historialUbicacionRepository;
+        private readonly DeliveryAppContext _deliveryAppContext;
 
         public PedidosController(IRepository<Pedido> pedidoRepository,
                                 IRepository<Cliente> clienteRepository,
                                 IRepository<Vehiculo> vehiculoRepository,
                                 IRepository<HistorialUbicacion> historialUbicacionRepository,
-                                ILogger<PedidosController> logger)
+                                ILogger<PedidosController> logger,
+                                DeliveryAppContext deliveryAppContext)
         {
             _pedidoRepository = pedidoRepository;
             _clienteRepository = clienteRepository;
             _vehiculoRepository = vehiculoRepository;
             _historialUbicacionRepository = historialUbicacionRepository;
             _logger = logger;
-            
+            _deliveryAppContext = deliveryAppContext;
+
         }
 
         [HttpGet("/check-api")]
@@ -48,7 +52,7 @@ namespace Delivery_App_Code_Challenge.Controllers
         }
 
         [HttpGet("/client/get-all")]
-        public async Task<ActionResult<IAsyncEnumerable<Pedido>>> GetAllClients()
+        public async Task<ActionResult<IAsyncEnumerable<Cliente>>> GetAllClients()
         {
             var result = await _clienteRepository.GetAllAsync();
             if (result.Any())
