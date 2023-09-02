@@ -24,6 +24,11 @@ namespace Delivery_App_Code_Challenge.Controllers
 ;
         }
 
+        /// <summary>
+        /// Muestra una lista de los diferentes de Registros de Ubicación del pedido ordenados de fecha más reciente a más antigua.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("/seguimiento-pedido/{id}")]
         public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> WhereIsMyOrder(long id)
         {

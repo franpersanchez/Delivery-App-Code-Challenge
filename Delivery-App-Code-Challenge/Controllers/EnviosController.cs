@@ -21,20 +21,29 @@ namespace Delivery_App_Code_Challenge.Controllers
 
         }
 
-        [HttpPost("/envio/crear")]
-        public async Task<ActionResult<Envio>> AddNewEnvio(Envio newEnvio)
+        /// <summary>
+        /// Crea un nuevo envio. Previamente debe existir el Pedido.
+        /// </summary>
+        /// <param name="nuevoEnvio"></param>
+        /// <returns></returns>
+        [HttpPost("/envio/crea")]
+        public async Task<ActionResult<Envio>> AddNewEnvio(Envio nuevoEnvio)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _envioRepository.AddAsync(newEnvio);
+            await _envioRepository.AddAsync(nuevoEnvio);
 
-            return CreatedAtAction(nameof(AddNewEnvio), new { id = newEnvio.Id }, newEnvio);
+            return CreatedAtAction(nameof(AddNewEnvio), new { id = nuevoEnvio.Id }, nuevoEnvio);
         }
 
+        /// <summary>
+        /// Muestra todos los Envios existentes.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("/envio/muestra-todos")]
-        public async Task<ActionResult<IEnumerable<Pedido>>> GetAllEnvios()
+        public async Task<ActionResult<IEnumerable<Envio>>> GetAllEnvios()
         {
             var envios = await _envioRepository.GetAllAsync();
             if (envios.Any())
@@ -43,10 +52,16 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
             else
             {
-                return NotFound("Se se han encontrado Envios");
+                return NotFound("No se han encontrado Envios");
             }
         }
 
+        /// <summary>
+        /// Asigna un Pedido a un Envio para ser transportado.El Pedido debe existir y no estar ya enviado o entregado o previamente añadido al Envio.
+        /// </summary>
+        /// <param name="pedido_id"></param>
+        /// <param name="envio_id"></param>
+        /// <returns></returns>
         [HttpPut("/pedido/{pedido_id}/a-envio/{envio_id}")]
         public async Task<ActionResult<Envio>> AssignPedidoToEnvio(long pedido_id, long envio_id)
         {
@@ -59,6 +74,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
             else
             {
+                //el conjunto de Pedidos es un HashSet, por tanto si ya existe ese Pedido en este Envio, al intentar añadirlo retornoará false:
                 if (envio.Pedidos.Add(pedido))
                 {
                     //marcamos el estado como "ENVIADO" en el momento de agregar el pedido al envio
@@ -72,12 +88,10 @@ namespace Delivery_App_Code_Challenge.Controllers
                 {
                     //No debería ocurrir pero si de alguna forma se salta el check de estado.
                     return Conflict("Conflicto al agregar el pedido al envío. El pedido ya se encuentra en el envio.");
-
                 }
 
             }
         }
-
 
     }
 }

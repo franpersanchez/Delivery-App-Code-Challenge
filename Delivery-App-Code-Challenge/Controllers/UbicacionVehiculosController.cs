@@ -21,6 +21,11 @@ namespace Delivery_App_Code_Challenge.Controllers
 
         }
 
+        /// <summary>
+        /// Actualiza la posición dada de un Vehiculo pasando un nuevo objeto RegistroUbicacion
+        /// </summary>
+        /// <param name="nuevaUbicacion"></param>
+        /// <returns></returns>
         [HttpPut("/localizacion/vehiculo/actualiza-posicion")]
         public async Task<IActionResult> UpdateUbicacion([FromBody] RegistroUbicacion nuevaUbicacion)
         {
@@ -44,6 +49,12 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Muestra una lista del histórico de Ubicaciones de un Vehiculo determinado.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("/localizacion-historico/vehiculo/{id}")]
         public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetRegistroUbicacionForVehicle(long id)
         {
@@ -66,6 +77,11 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
         }
 
+        /// <summary>
+        /// Muestra el resultado más reciente del histórico de Ubicaciones de un Vehiculo determinado.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("/localizacion-actual/vehiculo/{id}")]
         public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetCurrentRegistroUbicacionForVehicle(long id)
         {

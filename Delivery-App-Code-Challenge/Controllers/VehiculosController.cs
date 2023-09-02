@@ -17,19 +17,27 @@ namespace Delivery_App_Code_Challenge.Controllers
             _vehiculoRepository = vehiculoRepository;
         }
 
-
-        [HttpPost("/vehiculo/crear")]
-        public async Task<ActionResult<Vehiculo>> AddNewVehiculo(Vehiculo newVehiculo)
+        /// <summary>
+        /// Crea un nuevo Vehiculo
+        /// </summary>
+        /// <param name="nuevoVehiculo"></param>
+        /// <returns></returns>
+        [HttpPost("/vehiculo/crea")]
+        public async Task<ActionResult<Vehiculo>> AddNewVehiculo(Vehiculo nuevoVehiculo)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _vehiculoRepository.AddAsync(newVehiculo);
+            await _vehiculoRepository.AddAsync(nuevoVehiculo);
 
-            return CreatedAtAction(nameof(AddNewVehiculo), new { id = newVehiculo.Id }, newVehiculo);
+            return CreatedAtAction(nameof(AddNewVehiculo), new { id = nuevoVehiculo.Id }, nuevoVehiculo);
         }
 
+        /// <summary>
+        /// Muestra todos los Vehiculos existentes en la base de datos.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("/vehiculo/muestra-todos")]
         public async Task<ActionResult<IEnumerable<Vehiculo>>> GetAllVehiculos()
         {

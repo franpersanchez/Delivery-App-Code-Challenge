@@ -22,7 +22,12 @@ namespace Delivery_App_Code_Challenge.Controllers
 
         }
 
-        [HttpPost("/pedidos/crear")]
+        /// <summary>
+        /// Crea un nuevo Pedido
+        /// </summary>
+        /// <param name="newPedido"></param>
+        /// <returns></returns>
+        [HttpPost("/pedidos/crea")]
         public async Task<ActionResult<Pedido>> AddNewPedido(Pedido newPedido)
         {
             if (!ModelState.IsValid)
@@ -35,8 +40,12 @@ namespace Delivery_App_Code_Challenge.Controllers
 
         }
 
-
-        [HttpPost("/pedidos/crear-rango")]
+        /// <summary>
+        /// Crea un rango de Pedidos a la vez.
+        /// </summary>
+        /// <param name="newPedidos"></param>
+        /// <returns></returns>
+        [HttpPost("/pedidos/crea-rango")]
         public async Task<ActionResult<IEnumerable<Pedido>>> AddNewPedidoRange(List<Pedido> newPedidos)
         {
             if (!ModelState.IsValid)
@@ -49,6 +58,11 @@ namespace Delivery_App_Code_Challenge.Controllers
 
         }
 
+        /// <summary>
+        /// Muestra todos los Pedidos existentes en la base de datos.
+        /// </summary>
+        /// <param name="estado"></param>
+        /// <returns></returns>
         [HttpGet("/pedidos/muestra-todos")]
         public async Task<ActionResult<IEnumerable<Pedido>>> GetAllPedidos([FromQuery] EstadoPedido? estado)
         {
@@ -64,15 +78,22 @@ namespace Delivery_App_Code_Challenge.Controllers
             return pedidos.Any() ? pedidos : NotFound("No se encontraron pedidos");
         }
 
+        /// <summary>
+        /// Actualiza el estado de un Pedido -> pendiente(default), aceptado, pagado, enviado, entregado.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="nuevoEstado"></param>
+        /// <returns></returns>
         [HttpPut("/pedidos/{id}/actualiza-estado")]
-        public async Task<IActionResult> UpdatePedido(long id, [FromQuery] EstadoPedido newEstado)
+        public async Task<IActionResult> UpdatePedido(long id, [FromQuery] EstadoPedido nuevoEstado)
         {
             var pedido = await _pedidoRepository.GetSingleOrDefaultAsync(p => p.Id == id);
             if (pedido == null)
             {
                 return NotFound();
             }
-            if (newEstado == EstadoPedido.Entregado)
+            //si se pretende actualiar como ENTREGADO, entonces se saca el Pedido del conjunto albergado en el Envio asociado:
+            if (nuevoEstado == EstadoPedido.Entregado)
             {
                 var envio = await _envioRepository.GetSingleOrDefaultAsync(e => e.Pedidos.Any(p => p.Id == id));
                 if (envio != null)
@@ -80,9 +101,10 @@ namespace Delivery_App_Code_Challenge.Controllers
                     envio.Pedidos.Remove(pedido);
                 }
             }
-            pedido.EstadoPedido = newEstado;
+            //actualizamos el estado del Pedido
+            pedido.EstadoPedido = nuevoEstado;
             _pedidoRepository.Update(pedido);
-            return Ok("Pedido con ID: " + id + ", actualizado como: " + newEstado);
+            return Ok("Pedido con ID: " + id + ", actualizado como: " + nuevoEstado);
         }
     }
 }

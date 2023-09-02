@@ -16,17 +16,26 @@ namespace Delivery_App_Code_Challenge.Controllers
             _clienteRepository = clienteRepository;
         }
 
-        [HttpPost("/clientes/crear")]
-        public async Task<ActionResult<Cliente>> AddNewClient(Cliente newCliente)
+        /// <summary>
+        /// Crea un nuevo cliente.
+        /// </summary>
+        /// <param name="nuevoCliente"></param>
+        /// <returns></returns>
+        [HttpPost("/clientes/crea")]
+        public async Task<ActionResult<Cliente>> AddNewClient(Cliente nuevoCliente)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _clienteRepository.AddAsync(newCliente);
-            return CreatedAtAction(nameof(AddNewClient), new { id = newCliente.Id }, newCliente);
+            await _clienteRepository.AddAsync(nuevoCliente);
+            return CreatedAtAction(nameof(AddNewClient), new { id = nuevoCliente.Id }, nuevoCliente);
         }
 
+        /// <summary>
+        /// Muestra todos los clientes existentes.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("/clientes/muestra-todos")]
         public async Task<ActionResult<IAsyncEnumerable<Cliente>>> GetAllClients()
         {
