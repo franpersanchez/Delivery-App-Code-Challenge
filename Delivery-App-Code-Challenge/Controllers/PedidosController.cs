@@ -128,6 +128,21 @@ namespace Delivery_App_Code_Challenge.Controllers
             return CreatedAtAction(nameof(AddNewVehiculo), new { id = newVehiculo.Id }, newVehiculo);
         }
 
+        [HttpGet("/vehicle/get-all")]
+        public async Task<ActionResult<IEnumerable<Vehiculo>>> GetAllVehiculos()
+        {
+            var vehiculos = await _vehiculoRepository.GetAllAsync();
+            if (vehiculos.Any())
+            {
+                return Ok(vehiculos);
+            }
+            else
+            {
+                return NotFound("No vehiculos found");
+            }
+        }
+
+
         [HttpPost("/shipment/add")]
         public async Task<ActionResult<Envio>> AddNewEnvio(Envio newEnvio)
         {
@@ -140,17 +155,34 @@ namespace Delivery_App_Code_Challenge.Controllers
             return CreatedAtAction(nameof(AddNewEnvio), new { id = newEnvio.Id }, newEnvio);
         }
 
+        [HttpGet("/shipment/get-all")]
+        public async Task<ActionResult<IEnumerable<Pedido>>> GetAllEnvios()
+        {
+            var envios = await _envioRepository.GetAllAsync();
+            if (envios.Any())
+            {
+                return Ok(envios);
+            }
+            else
+            {
+                return NotFound("No Envios found");
+            }
+        }
+
+
+
         [HttpPut("/order/{order_id}/to-shipment/{shipment_id}")]
         public async Task<ActionResult<Envio>> AssignPedidoToEnvio(long order_id, long shipment_id)
         {
-            var pedido = await _pedidoRepository.GetSingleOrDefaultAsync(p=>p.Id== order_id);
-            var envio = await _envioRepository.GetSingleOrDefaultAsync(_ => _.Id== shipment_id);
+            var pedido = await _pedidoRepository.GetSingleOrDefaultAsync(p => p.Id == order_id);
+            var envio = await _envioRepository.GetSingleOrDefaultAsync(_ => _.Id == shipment_id);
 
-            if(pedido == null || envio == null)
+            if (pedido == null || envio == null)
             {
                 return NotFound("No pedidos or Envios found");
             }
-            else{
+            else
+            {
                 envio.Pedidos.Add(pedido);
                 _envioRepository.Update(envio);
                 return Ok(envio);
