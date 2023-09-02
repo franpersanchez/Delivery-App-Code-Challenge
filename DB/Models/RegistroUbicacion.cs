@@ -18,7 +18,7 @@ namespace Delivery_App_Code_Challenge.DB.Models
         [Required]
         public long VehiculoId { get; set; }
 
-        public Vehiculo Vehiculo { get; set; } = null!;
+        public Vehiculo? Vehiculo { get; set; } = null!;
 
     }
 }

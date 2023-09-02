@@ -5,6 +5,7 @@ using Delivery_App_Code_Challenge.DB.Models;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System.Data.Entity;
 using DB.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Delivery_App_Code_Challenge.Controllers
 {
@@ -16,13 +17,13 @@ namespace Delivery_App_Code_Challenge.Controllers
         private readonly IRepository<Pedido> _pedidoRepository;
         private readonly IRepository<Cliente> _clienteRepository;
         private readonly IRepository<Vehiculo> _vehiculoRepository;
-        private readonly IRepository<RegistroUbicacion> _historialUbicacionRepository;
+        private readonly IRepository<RegistroUbicacion> _registroUbicacionRepository;
         private readonly IRepository<Envio> _envioRepository;
 
         public PedidosController(IRepository<Pedido> pedidoRepository,
                                 IRepository<Cliente> clienteRepository,
                                 IRepository<Vehiculo> vehiculoRepository,
-                                IRepository<RegistroUbicacion> historialUbicacionRepository,
+                                IRepository<RegistroUbicacion> registroUbicacionRepository,
                                 ILogger<PedidosController> logger,
                                 IRepository<Envio> envioRepository
                                 )
@@ -30,7 +31,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             _pedidoRepository = pedidoRepository;
             _clienteRepository = clienteRepository;
             _vehiculoRepository = vehiculoRepository;
-            _historialUbicacionRepository = historialUbicacionRepository;
+            _registroUbicacionRepository = registroUbicacionRepository;
             _envioRepository = envioRepository;
             _logger = logger;
         }
@@ -111,6 +112,14 @@ namespace Delivery_App_Code_Challenge.Controllers
             {
                 return NotFound();
             }
+            if(newEstado == EstadoPedido.Entregado)
+            {
+                var envio = await _envioRepository.GetSingleOrDefaultAsync(e=>e.Pedidos.Any(p=>p.Id==id));
+                if(envio != null)
+                {
+                    envio.Pedidos.Remove(pedido);
+                }
+            }
             pedido.EstadoPedido = newEstado;
             _pedidoRepository.Update(pedido);
             return Ok("pedido con ID: " + id + ", actualizado como: " + newEstado);
@@ -170,7 +179,6 @@ namespace Delivery_App_Code_Challenge.Controllers
         }
 
 
-
         [HttpPut("/order/{order_id}/to-shipment/{shipment_id}")]
         public async Task<ActionResult<Envio>> AssignPedidoToEnvio(long order_id, long shipment_id)
         {
@@ -189,5 +197,90 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
         }
 
+        [HttpPut("localization/vehicle-update-position")]
+        public async Task<IActionResult> UpdateUbicacion([FromBody] RegistroUbicacion nuevaUbicacion)
+        {
+            try
+            {
+                var vehiculo = await _vehiculoRepository.GetSingleOrDefaultAsync(v => v.Id == nuevaUbicacion.VehiculoId);
+
+                if (vehiculo == null)
+                {
+                    return NotFound("Vehículo not found");
+                }
+
+                // Actualizar la posición del vehículo
+                var newRegistroUbicacion = await _registroUbicacionRepository.AddAsync(nuevaUbicacion);
+
+                return Ok("Ubicación del vehículo actualizada correctamente");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor: " + ex.Message);
+            }
+        }
+
+        [HttpGet("localization-history/vehicle/{vehicle_id}")]
+        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> RegistroUbicacionForVehicle(long vehicle_id)
+        {
+            var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v=>v.Id== vehicle_id);
+            if(vehicle == null)
+            {
+                return NotFound("Vehiculo not found");
+            }
+            else
+            {
+                var registroUbicacion = vehicle.RegistroUbicaciones;
+                if (registroUbicacion.Any())
+                {
+                    return registroUbicacion.ToList();
+                }
+                else
+                {
+                    return NotFound("No RegistroUbicaciones for this Vehiculo yet");
+                }
+            }
+        }
+        [HttpGet("/where-is-my-order/{order_id}")]
+        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> WhereIsMyOrder(long order_id)
+        {
+            try
+            {
+                // Buscar el pedido por su ID
+                var pedido = await _pedidoRepository.GetSingleOrDefaultAsync(p => p.Id == order_id);
+
+                if (pedido == null)
+                {
+                    return NotFound("Pedido not found");
+                }
+
+                // Encontrar uno de los envíos asociados a este pedido, si existe
+                var envio = await _envioRepository.GetSingleOrDefaultAsync(x=>x.Pedidos.Any(x=>x.Id==order_id));
+
+                if (envio == null)
+                {
+                    return NotFound("No info for this Envio");
+                }
+
+                // Obtener el vehículo asociado al envío
+                var vehiculo = envio.Vehiculo;
+
+                if (vehiculo == null)
+                {
+                    return NotFound("No info for this Vehiculo");
+                }
+
+                // Obtener la lista de registros de ubicación del vehículo ordenada por fecha de registro
+                var registrosUbicacion = vehiculo.RegistroUbicaciones
+                    .OrderByDescending(r => r.FechaRegistro)
+                    .ToList();
+
+                return Ok(registrosUbicacion);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor: " + ex.Message);
+            }
+        }
     }
 }

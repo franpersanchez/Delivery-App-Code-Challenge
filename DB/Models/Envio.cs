@@ -16,7 +16,5 @@ namespace DB.Models
 
         public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 
-        [DefaultValue(false)]
-        public bool Entregado { get; set; } = false;
     }
 }
