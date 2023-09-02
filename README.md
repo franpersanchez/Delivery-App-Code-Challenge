@@ -45,3 +45,15 @@ Una vez en la carpeta principal del proyecto, bastará con correr en la linea de 
 ```
 docker-compose up
 ```
+
+Accedidiendo a la url: http://localhost:8080/swagger/index.html tendrá acceso a la GUI de documentación de Swagger con la implementación de los requisitos del Nivel 1.
+
+Se han creado diferentes secciones (controllers) relacionados con cada lógica:
+
+- Clientes: permite crear o mostrar el total de clientes en la base de datos.
+	- /clientes/crea -> Crea un nuevo cliente en la BD
+- Envios
+- Pedidos
+- SeguimientoPedidos
+- UbicacionPedidos
+- Vehiculos
