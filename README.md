@@ -7,9 +7,12 @@ clientes y necesita poder rastrear en tiempo real donde se encuentra cada
 pedido y el vehículo/conductor que lo lleva.
 Como ya disponen de varias aplicaciones, tanto de los conductores como
 de los clientes, nos piden crear una API con la que puedan:
+
 • Añadir nuevos pedidos
+
 • Actualizar la posición del pedido (cualquier sistema de
 coordenadas valdrá)
+
 • Obtener la posición del pedido y el vehículo mediante el número de
 pedido
 
