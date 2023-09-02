@@ -1,4 +1,5 @@
 ﻿using DB;
+using System.Text.Json.Serialization;
 
 namespace Delivery_App_Code_Challenge.DB.Models
 {
@@ -8,8 +9,10 @@ namespace Delivery_App_Code_Challenge.DB.Models
 
         public string? NombreConductor { get; set; }
 
-        public ICollection<Pedido>? Pedidos { get; set; } = new List<Pedido>(); 
+        [JsonIgnore]
+        public ICollection<Pedido>? Pedidos { get; set; } = new List<Pedido>();
 
+        [JsonIgnore]
         public ICollection<RegistroUbicacion> RegistroUbicaciones {  get; set; } = new List<RegistroUbicacion>();
     }
 

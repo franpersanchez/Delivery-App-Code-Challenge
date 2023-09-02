@@ -197,7 +197,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
         }
 
-        [HttpPut("localization/vehicle-update-position")]
+        [HttpPut("/localization/vehicle-update-position")]
         public async Task<IActionResult> UpdateUbicacion([FromBody] RegistroUbicacion nuevaUbicacion)
         {
             try
@@ -220,7 +220,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
         }
 
-        [HttpGet("localization-history/vehicle/{vehicle_id}")]
+        [HttpGet("/localization-history/vehicle/{vehicle_id}")]
         public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetRegistroUbicacionForVehicle(long vehicle_id)
         {
             var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v=>v.Id== vehicle_id);
@@ -242,7 +242,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
         }
 
-        [HttpGet("current-localization/vehicle/{vehicle_id}")]
+        [HttpGet("/current-localization/vehicle/{vehicle_id}")]
         public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetCurrentRegistroUbicacionForVehicle(long vehicle_id)
         {
             var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v => v.Id == vehicle_id);

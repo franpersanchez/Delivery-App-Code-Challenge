@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DB.Models
@@ -12,8 +13,12 @@ namespace DB.Models
     {
         public long VehiculoId { get; set; }
 
+        public string? ZonaPostal { get; set; }
+
+        [JsonIgnore]
         public Vehiculo? Vehiculo { get; set; } = null!;
 
+        [JsonIgnore]
         public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 
     }

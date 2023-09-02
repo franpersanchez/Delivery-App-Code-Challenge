@@ -1,6 +1,7 @@
 ﻿using DB;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Delivery_App_Code_Challenge.DB.Models
 {
@@ -18,6 +19,7 @@ namespace Delivery_App_Code_Challenge.DB.Models
         [Required]
         public long VehiculoId { get; set; }
 
+        [JsonIgnore]
         public Vehiculo? Vehiculo { get; set; } = null!;
 
     }
