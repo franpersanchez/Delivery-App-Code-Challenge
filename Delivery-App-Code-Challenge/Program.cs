@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using DB;
+using DB.Interfaces;
+using DB.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +13,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<DeliveryAppContext>(
