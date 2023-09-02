@@ -37,7 +37,7 @@ namespace Delivery_App_Code_Challenge.Controllers
                     return NotFound("Pedido no encontrado");
                 }
 
-                // Encontrar uno de los envíos asociados a este pedido, si existe
+                // Encuentra uno de los envíos asociados a este pedido, si existe
                 var envio = await _envioRepository.GetSingleOrDefaultAsync(x => x.Pedidos.Any(x => x.Id == id));
 
                 if (envio == null)

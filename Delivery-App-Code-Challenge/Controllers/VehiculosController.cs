@@ -18,7 +18,7 @@ namespace Delivery_App_Code_Challenge.Controllers
         }
 
 
-        [HttpPost("/vehicle/add")]
+        [HttpPost("/vehiculo/crear")]
         public async Task<ActionResult<Vehiculo>> AddNewVehiculo(Vehiculo newVehiculo)
         {
             if (!ModelState.IsValid)
@@ -30,7 +30,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             return CreatedAtAction(nameof(AddNewVehiculo), new { id = newVehiculo.Id }, newVehiculo);
         }
 
-        [HttpGet("/vehicle/get-all")]
+        [HttpGet("/vehiculo/muestra-todos")]
         public async Task<ActionResult<IEnumerable<Vehiculo>>> GetAllVehiculos()
         {
             var vehiculos = await _vehiculoRepository.GetAllAsync();
@@ -40,7 +40,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
             else
             {
-                return NotFound("No vehiculos found");
+                return NotFound("Sin vehiculos en la base de datos");
             }
         }
 

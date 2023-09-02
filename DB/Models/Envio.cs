@@ -11,9 +11,9 @@ namespace DB.Models
 {
     public class Envio : Entity
     {
-        public long VehiculoId { get; set; }
-
         public string? ZonaPostal { get; set; }
+
+        public long VehiculoId { get; set; }
 
         [JsonIgnore]
         public Vehiculo? Vehiculo { get; set; } = null!;
