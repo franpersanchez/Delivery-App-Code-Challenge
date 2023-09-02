@@ -24,8 +24,9 @@ namespace Delivery_App_Code_Challenge.DB.Models
     public enum EstadoPedido
     {
         Pendiente,
-        Aceptado,
         Pagado,
+        Aceptado,
+        Enviado,
         Entregado
     }
 }
