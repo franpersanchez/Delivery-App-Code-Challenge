@@ -221,7 +221,7 @@ namespace Delivery_App_Code_Challenge.Controllers
         }
 
         [HttpGet("localization-history/vehicle/{vehicle_id}")]
-        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> RegistroUbicacionForVehicle(long vehicle_id)
+        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetRegistroUbicacionForVehicle(long vehicle_id)
         {
             var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v=>v.Id== vehicle_id);
             if(vehicle == null)
@@ -241,6 +241,30 @@ namespace Delivery_App_Code_Challenge.Controllers
                 }
             }
         }
+
+        [HttpGet("current-localization/vehicle/{vehicle_id}")]
+        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetCurrentRegistroUbicacionForVehicle(long vehicle_id)
+        {
+            var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v => v.Id == vehicle_id);
+            if (vehicle == null)
+            {
+                return NotFound("Vehiculo not found");
+            }
+            else
+            {
+                var registroUbicacion = vehicle.RegistroUbicaciones;
+                if (registroUbicacion.Any())
+                {
+                    var registroMasReciente = registroUbicacion.OrderByDescending(r => r.FechaRegistro).First();
+                    return Ok(registroMasReciente);
+                }
+                else
+                {
+                    return NotFound("No RegistroUbicaciones for this Vehiculo yet");
+                }
+            }
+        }
+
         [HttpGet("/where-is-my-order/{order_id}")]
         public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> WhereIsMyOrder(long order_id)
         {
