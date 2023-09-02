@@ -11,29 +11,29 @@ services:
      context: .
      dockerfile: Delivery-App-Code-Challenge/Dockerfile
     ports:
-     - "8080:80"
+      - "8080:80"
     environment:
-     - ConnectionStrings__DefaultConnection=User ID=postgres;Password=postgres;Server=db;Port=5432;Database=app_db; IntegratedSecurity=true;Pooling=true;
-     - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=postgres;Server=db;Port=5432;Database=app_db; IntegratedSecurity=true;Pooling=true;
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
       - "db"
     networks:
-     - dev
+      - dev
 
   db:
    container_name: db
    image: postgres:12
    ports:
-    - "5432:5432"
+     - "5432:5432"
    restart: always
    environment:
     POSTGRES_PASSWORD: postgres
     POSTGRES_USER: postgres
     POSTGRES_DB: app_db
    volumes:
-    - pgdata:/var/lib/postresql/data
+     - pgdata:/var/lib/postresql/data
    networks:
-    - dev
+     - dev
  
 volumes:
  pgdata: 
