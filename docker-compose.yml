@@ -6,13 +6,15 @@ services:
     build:
       context: .
       dockerfile: Delivery-App-Code-Challenge/Dockerfile
+    ports:
+     - "8080:80"
     environment:
-     ConnectionStrings_DefaultConnection: "Host=db;Port=5432;Database=postgres;Username=postgres;Password=postgres"
+     ConnectionStrings_DefaultConnection: "Host=db;Database=postgres;Username=postgres;Password=postgres"
     depends_on:
      - db
   db:
    container_name: db
-   image: postgres:13
+   image: postgres:12
    ports:
    - "5432:5432"
    environment:
