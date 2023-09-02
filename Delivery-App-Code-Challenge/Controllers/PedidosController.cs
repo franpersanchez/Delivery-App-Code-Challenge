@@ -117,5 +117,19 @@ namespace Delivery_App_Code_Challenge.Controllers
             _pedidoRepository.Update(pedido);
             return Ok("pedido con ID: " + id + ", actualizado como: " + newEstado);
         }
+
+        [HttpPost("/vehicle/add")]
+        public async Task<ActionResult<Vehiculo>> AddNewVehiculo(Vehiculo newVehiculo)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _vehiculoRepository.AddAsync(newVehiculo);
+
+            return CreatedAtAction(nameof(AddNewVehiculo), new { id = newVehiculo.Id }, newVehiculo);
+        }
+
+        [HttpPost("/shipment/add")]
     }
 }
