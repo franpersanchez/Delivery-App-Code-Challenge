@@ -50,10 +50,26 @@ Accedidiendo a la url: http://localhost:8080/swagger/index.html tendrá acceso a 
 
 Se han creado diferentes secciones (controllers) relacionados con cada lógica:
 
-- Clientes: permite crear o mostrar el total de clientes en la base de datos.
-	- /clientes/crea -> Crea un nuevo cliente en la BD
-- Envios
-- Pedidos
-- SeguimientoPedidos
-- UbicacionPedidos
-- Vehiculos
+- ### Clientes
+	- /clientes/crea -> Crea un nuevo cliente en la BD.
+	- /clientes/muestra-todos -> Muestra todos los clientes de la BD.
+- ### Pedidos
+	Los Pedidos están sujetos a la existencia de un Cliente. Un Pedido contiene información referente al cliente, comentarios y la fecha-hora de su creación.
+	- /pedidos/crea -> Crea un nuevo Pedido en la BD.
+	- /pedidos/crea-rango -> Crea una serie de Pedidos a la vez.
+	- /pedidos/muestra-todos -> Muestra todos los Envios de la BD.
+	- /pedidos/{id}/actualiza-estado -> Actualiza el estado de un Pedido: pendiente(default), aceptado, pagado, enviado, entregado.
+- ### Envios
+	Los Envios están sujetos a la existencia de un Pedido y de un Vehiculo que los transporte. No pueden contener Pedidos duplicados. Cuando un Pedido se entrega, desaparece del objeto Envio.
+	- /envio/crea -> Crea un nuevo Envio en la BD.
+	- /envio/muestra-todos -> Muestra todos los Envios de la BD.
+	- /pedido/{pedido_id}/a-envio/{envio_id} ->asigna un Pedido a un Envio (puede albergar muchos Pedidos diferentes).
+- ### SeguimientoPedidos
+	- /seguimiento-pedido/{id} -> Permite conocer el historial de Ubicaciones (por fecha) de un Pedido en concreto.
+- ### UbicacionVehiculos
+	- /localizacion/vehiculo/actualiza-posicion -> Actualiza la posición de un vehiculo determinado en una fecha-hora.
+	- /localizacion-historico/vehiculo/{id} -> permite conocer el historial de posiciones de un Vehiculo determinado, ordenado de mas reciente a más antigua.
+	- /localizacion-actual/vehiculo/{id} -> permite conocer la posición mas reciente de un Vehiculo determinado.
+- ### Vehiculos
+	- /vehiculo/crea -> Crea un nuevo Vehiculo en la BD.
+	- /vehiculo/muestra-todos -> Muestra todos los Vehiculos de la BD.
