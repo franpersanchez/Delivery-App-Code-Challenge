@@ -13,7 +13,7 @@ namespace Delivery_App_Code_Challenge.DB.Models
 
         public string? ubicacion { get; set; }
 
-        public List<Pedido> Pedidos { get; set; }
+        List<Pedido>? Pedidos { get; set; } = null;
 
     }
 }

@@ -36,6 +36,17 @@ namespace Delivery_App_Code_Challenge.Controllers
             return Ok("API correctly running");
         }
 
+        [HttpPost("/add-new-client")]
+        public async Task<ActionResult<Cliente>> AddNewClient(Cliente newCliente)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _clienteRepository.AddAsync(newCliente);
+            return CreatedAtAction(nameof(AddNewClient), new { id = newCliente.Id }, newCliente);
+        }
+
         [HttpPost("/add-new-order")]
         public async Task<ActionResult<Pedido>> AddNewPedido(Pedido newPedido)
         {
