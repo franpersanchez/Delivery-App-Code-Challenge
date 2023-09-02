@@ -16,22 +16,19 @@ namespace Delivery_App_Code_Challenge.Controllers
         private readonly IRepository<Cliente> _clienteRepository;
         private readonly IRepository<Vehiculo> _vehiculoRepository;
         private readonly IRepository<HistorialUbicacion> _historialUbicacionRepository;
-        private readonly DeliveryAppContext _deliveryAppContext;
 
         public PedidosController(IRepository<Pedido> pedidoRepository,
                                 IRepository<Cliente> clienteRepository,
                                 IRepository<Vehiculo> vehiculoRepository,
                                 IRepository<HistorialUbicacion> historialUbicacionRepository,
                                 ILogger<PedidosController> logger,
-                                DeliveryAppContext deliveryAppContext)
+                                )
         {
             _pedidoRepository = pedidoRepository;
             _clienteRepository = clienteRepository;
             _vehiculoRepository = vehiculoRepository;
             _historialUbicacionRepository = historialUbicacionRepository;
             _logger = logger;
-            _deliveryAppContext = deliveryAppContext;
-
         }
 
         [HttpGet("/check-api")]
