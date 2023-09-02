@@ -21,7 +21,7 @@ namespace Delivery_App_Code_Challenge.Controllers
                                 IRepository<Cliente> clienteRepository,
                                 IRepository<Vehiculo> vehiculoRepository,
                                 IRepository<HistorialUbicacion> historialUbicacionRepository,
-                                ILogger<PedidosController> logger,
+                                ILogger<PedidosController> logger
                                 )
         {
             _pedidoRepository = pedidoRepository;
@@ -88,8 +88,33 @@ namespace Delivery_App_Code_Challenge.Controllers
             await _pedidoRepository.AddRangeAsync(newPedidos);
 
             return CreatedAtAction(nameof(AddNewPedidoRange), new { }, newPedidos);
-           
+
         }
 
+        [HttpPut("/orders/{id}/update")]
+        public async Task<IActionResult> UpdatePedido(int id, [FromQuery] string estado)
+        {
+            var pedido = await _pedidoRepository.GetSingleOrDefaultAsync(p => p.Id == id);
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+            switch (estado)
+            {
+                case "entregado":
+                    pedido.Entregado = true;
+                    break;
+                case "aceptado":
+                    pedido.Aceptado = true;
+                    break;
+                case "pagado":
+                    pedido.Pagado = true;
+                    break;
+                default:
+                    return BadRequest("El valor de 'estado' no es válido.");
+            }
+            _pedidoRepository.Update(pedido);
+            return Ok("pedido actualizado como" + estado);
+        }
     }
 }

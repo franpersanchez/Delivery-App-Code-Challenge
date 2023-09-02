@@ -6,8 +6,10 @@ namespace Delivery_App_Code_Challenge.DB.Models
     {
         [DefaultValue(false)]
         public bool Entregado { get; set; } = false;
+
         [DefaultValue(false)]
         public bool Aceptado { get; set; } = false;
+
         [DefaultValue(false)]
         public bool Pagado { get; set; } = false;
 
