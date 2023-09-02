@@ -1,4 +1,5 @@
 ﻿using DB;
+using DB.Models;
 using Delivery_App_Code_Challenge.DB.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ namespace DB
         public DbSet<RegistroUbicacion> HistorialUbicaciones { get; set; }
         public DbSet<RegistroUbicacion> RegistroUbicaciones { get; set; }
 
+        public DbSet<Envio> Envios { get; set; }
         public DeliveryAppContext(DbContextOptions<DeliveryAppContext> options) : base(options)
         {
         }

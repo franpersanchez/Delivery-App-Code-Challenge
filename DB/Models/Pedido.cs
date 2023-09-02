@@ -16,11 +16,6 @@ namespace Delivery_App_Code_Challenge.DB.Models
 
         public DateTime HoraCreacion { get; set; }
 
-        //Será 0 por defecto hasta que se le asigne el Id de un Vehiculo
-        public long VehiculoId { get; set; }
-        public Vehiculo? Vehiculo { get; set; } = null!;
-
-
     }
 
     public enum EstadoPedido

@@ -3,6 +3,7 @@ using System;
 using DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DB.Migrations
 {
     [DbContext(typeof(DeliveryAppContext))]
-    partial class DeliveryAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230902164611_add_Envios")]
+    partial class add_Envios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,7 +100,7 @@ namespace DB.Migrations
                     b.Property<DateTime>("HoraCreacion")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("VehiculoId")
+                    b.Property<long>("VehiculoId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -182,11 +185,15 @@ namespace DB.Migrations
                         .WithMany("Pedidos")
                         .HasForeignKey("EnvioId");
 
-                    b.HasOne("Delivery_App_Code_Challenge.DB.Models.Vehiculo", null)
+                    b.HasOne("Delivery_App_Code_Challenge.DB.Models.Vehiculo", "Vehiculo")
                         .WithMany("Pedidos")
-                        .HasForeignKey("VehiculoId");
+                        .HasForeignKey("VehiculoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cliente");
+
+                    b.Navigation("Vehiculo");
                 });
 
             modelBuilder.Entity("Delivery_App_Code_Challenge.DB.Models.RegistroUbicacion", b =>
