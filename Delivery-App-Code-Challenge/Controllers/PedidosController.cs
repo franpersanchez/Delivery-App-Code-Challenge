@@ -15,12 +15,12 @@ namespace Delivery_App_Code_Challenge.Controllers
         private readonly IRepository<Pedido> _pedidoRepository;
         private readonly IRepository<Cliente> _clienteRepository;
         private readonly IRepository<Vehiculo> _vehiculoRepository;
-        private readonly IRepository<HistorialUbicacion> _historialUbicacionRepository;
+        private readonly IRepository<RegistroUbicacion> _historialUbicacionRepository;
 
         public PedidosController(IRepository<Pedido> pedidoRepository,
                                 IRepository<Cliente> clienteRepository,
                                 IRepository<Vehiculo> vehiculoRepository,
-                                IRepository<HistorialUbicacion> historialUbicacionRepository,
+                                IRepository<RegistroUbicacion> historialUbicacionRepository,
                                 ILogger<PedidosController> logger
                                 )
         {
@@ -72,7 +72,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
             await _pedidoRepository.AddAsync(newPedido);
 
-            return CreatedAtAction(nameof(AddNewPedido), new { }, newPedido);
+            return CreatedAtAction(nameof(AddNewPedido), new { id = newPedido.Id }, newPedido);
 
         }
 
@@ -92,29 +92,16 @@ namespace Delivery_App_Code_Challenge.Controllers
         }
 
         [HttpPut("/orders/{id}/update")]
-        public async Task<IActionResult> UpdatePedido(int id, [FromQuery] string estado)
+        public async Task<IActionResult> UpdatePedido(int id, [FromQuery] EstadoPedido newEstado)
         {
             var pedido = await _pedidoRepository.GetSingleOrDefaultAsync(p => p.Id == id);
             if (pedido == null)
             {
                 return NotFound();
             }
-            switch (estado)
-            {
-                case "entregado":
-                    pedido.Entregado = true;
-                    break;
-                case "aceptado":
-                    pedido.Aceptado = true;
-                    break;
-                case "pagado":
-                    pedido.Pagado = true;
-                    break;
-                default:
-                    return BadRequest("El valor de 'estado' no es válido.");
-            }
+            pedido.EstadoPedido = newEstado;
             _pedidoRepository.Update(pedido);
-            return Ok("pedido actualizado como" + estado);
+            return Ok("pedido con ID: "+id+", actualizado como: " + newEstado);
         }
     }
 }

@@ -12,10 +12,12 @@ namespace Delivery_App_Code_Challenge.DB.Models
 
         public string? Telefono { get; set; }
 
-        public float latitud { get; set; }
-        public float longitud { get; set; }
+        public string? Email { get; set; }
 
-        List<Pedido>? Pedidos { get; set; } = null;
+        public float Ubicacion_latitud { get; set; }
+        public float Ubicacion_longitud { get; set; }
+
+        public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 
     }
 

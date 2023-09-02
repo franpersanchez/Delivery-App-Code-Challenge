@@ -1,4 +1,4 @@
-﻿using DB.Models;
+﻿using DB;
 
 namespace Delivery_App_Code_Challenge.DB.Models
 {
@@ -8,7 +8,9 @@ namespace Delivery_App_Code_Challenge.DB.Models
 
         public string? NombreConductor { get; set; }
 
-        public List<Pedido>? Pedidos { get; set; } = null!; 
+        public ICollection<Pedido>? Pedidos { get; set; } = new List<Pedido>(); 
+
+        public ICollection<RegistroUbicacion> RegistroUbicaciones {  get; set; } = new List<RegistroUbicacion>();
     }
 
 }
