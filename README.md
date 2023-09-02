@@ -16,7 +16,7 @@ coordenadas valdrá)
 • Obtener la posición del pedido y el vehículo mediante el número de
 pedido
 
-- Nivel 1 – Modelado
+- ## Nivel 1 – Modelado
 
 Crear una API, asi como el modelo de datos, para insertar, actualizar y
 obtener la ubicación de los vehículos.
@@ -25,13 +25,13 @@ pedidos a los vehículos existentes.
 Hay que tener en cuenta que el modelo de datos debe permitir actualizar
 la ubicación de cada vehículo y guardar su historial de ubicación.
 
-- Nivel 2 - Comunicación
+- ## Nivel 2 - Comunicación
 
 En vez de obligar a las aplicaciones a realizar consultas o polling sobre la
 posición de cada vehículo/pedido, se debe añadir algún metodo para
 notificar a las partes interesadas en tiempo real.
 
-- Nivel 3 – Escalabilidad
+- ## Nivel 3 – Escalabilidad
 
 Llegado a este nivel preveemos que vamos a tener muchos vehículos y
 pedidos, hay que implementar elementos para asegurar la escalabilidad
