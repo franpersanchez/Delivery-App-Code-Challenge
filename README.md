@@ -36,3 +36,4 @@ de la aplicación y optimizar las llamadas.
 
 # Comentarios sobre la Solución:
 
+La solución se presenta en un entorno dockerizado. Simplemente bastará con clonar el código en un repositorio local y tener instalado Docker en el ordenador. 
