@@ -47,6 +47,18 @@ namespace Delivery_App_Code_Challenge.Controllers
             return CreatedAtAction(nameof(AddNewPedido), new { id =  newPedido.Id }, newPedido);
         }
 
+        [HttpPost("/add-new-order-range")]
+        public async Task<ActionResult<Pedido>> AddNewPedidoRange(List<Pedido> newPedidos)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _pedidoRepository.AddRangeAsync(newPedidos);
+
+            return CreatedAtAction(nameof(AddNewPedidoRange), new { }, newPedidos);
+           
+        }
 
     }
 }
