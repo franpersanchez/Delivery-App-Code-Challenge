@@ -9,11 +9,17 @@ namespace Delivery_App_Code_Challenge.DB.Models
 
         public string? Apellidos { get; set; }
 
-        public string? telefono { get; set; }
+        public string? Telefono { get; set; }
 
-        public string? ubicacion { get; set; }
+        public Ubicacion? Ubicacion { get; set; }
 
         List<Pedido>? Pedidos { get; set; } = null;
 
+    }
+
+    public class Ubicacion : Entity
+    {
+        public float latitud { get; set; }
+        public float longitud { get; set; }
     }
 }

@@ -11,10 +11,10 @@ namespace Delivery_App_Code_Challenge.DB.Models
         [DefaultValue(false)]
         public bool Pagado { get; set; } = false;
 
-        public string Commentarios { get; set; }
+        public string? Commentarios { get; set; }
 
 
-        //la ubicación se obtiene a partir de la ubicación del cliente
+        //la ubicación (destino) se obtiene a partir de la ubicación del cliente
         public long ClienteId { get; set; }
 
         Cliente? Cliente { get; set; } = null;

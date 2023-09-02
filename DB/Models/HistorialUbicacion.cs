@@ -2,8 +2,8 @@
 {
     public class HistorialUbicacion : Entity
     {
-        public DateTime FechaHora { get; set; }
-        public string Ubicacion { get; set; }
+        public DateTime FechaRegistro { get; set; }
+        public Ubicacion Ubicacion { get; set; }
 
     }
 }
