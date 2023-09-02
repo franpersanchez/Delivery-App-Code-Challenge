@@ -36,7 +36,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             return Ok("API correctly running");
         }
 
-        [HttpPost("/add-new-client")]
+        [HttpPost("/client/add")]
         public async Task<ActionResult<Cliente>> AddNewClient(Cliente newCliente)
         {
             if (!ModelState.IsValid)
@@ -47,19 +47,38 @@ namespace Delivery_App_Code_Challenge.Controllers
             return CreatedAtAction(nameof(AddNewClient), new { id = newCliente.Id }, newCliente);
         }
 
-        [HttpPost("/add-new-order")]
+        [HttpGet("/client/get-all")]
+        public async Task<ActionResult<IAsyncEnumerable<Pedido>>> GetAllClients()
+        {
+            var result = await _clienteRepository.GetAllAsync();
+            if (result.Any())
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return StatusCode(204, "No clients found");
+            }
+        }
+
+
+        [HttpPost("/orders/add")]
         public async Task<ActionResult<Pedido>> AddNewPedido(Pedido newPedido)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             await _pedidoRepository.AddAsync(newPedido);
-            return CreatedAtAction(nameof(AddNewPedido), new { id =  newPedido.Id }, newPedido);
+
+            return CreatedAtAction(nameof(AddNewPedido), new { }, newPedido);
+
         }
 
-        [HttpPost("/add-new-order-range")]
-        public async Task<ActionResult<Pedido>> AddNewPedidoRange(List<Pedido> newPedidos)
+
+
+        [HttpPost("/orders/add-range")]
+        public async Task<ActionResult<IEnumerable<Pedido>>> AddNewPedidoRange(List<Pedido> newPedidos)
         {
             if (!ModelState.IsValid)
             {
