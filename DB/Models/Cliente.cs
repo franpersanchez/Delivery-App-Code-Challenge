@@ -5,10 +5,6 @@ namespace Delivery_App_Code_Challenge.DB.Models
 {
     public class Cliente : Entity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ClienteID { get; set; }
-
         public string? Nombre { get; set; }
 
         public string? Apellidos { get; set; }
