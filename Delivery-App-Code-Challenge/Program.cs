@@ -24,6 +24,13 @@ builder.Services.AddDbContext<DeliveryAppContext>(
 
 var app = builder.Build();
 
+//execution of migrations on app initialization
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DeliveryAppContext>();
+    context.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 
 if (app.Environment.IsDevelopment())
