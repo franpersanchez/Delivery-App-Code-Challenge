@@ -9,27 +9,11 @@ namespace Delivery_App_Code_Challenge.Controllers
     [Route("[controller")]
     public class ClientesController : ControllerBase
     {
-        private readonly ILogger<PedidosController> _logger;
-        private readonly IRepository<Pedido> _pedidoRepository;
         private readonly IRepository<Cliente> _clienteRepository;
-        private readonly IRepository<Vehiculo> _vehiculoRepository;
-        private readonly IRepository<RegistroUbicacion> _registroUbicacionRepository;
-        private readonly IRepository<Envio> _envioRepository;
 
-        public ClientesController(IRepository<Pedido> pedidoRepository,
-                                IRepository<Cliente> clienteRepository,
-                                IRepository<Vehiculo> vehiculoRepository,
-                                IRepository<RegistroUbicacion> registroUbicacionRepository,
-                                ILogger<PedidosController> logger,
-                                IRepository<Envio> envioRepository
-                                )
+        public ClientesController(IRepository<Cliente> clienteRepository)
         {
-            _pedidoRepository = pedidoRepository;
             _clienteRepository = clienteRepository;
-            _vehiculoRepository = vehiculoRepository;
-            _registroUbicacionRepository = registroUbicacionRepository;
-            _envioRepository = envioRepository;
-            _logger = logger;
         }
 
         [HttpPost("/client/add")]
