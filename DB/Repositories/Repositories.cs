@@ -1,6 +1,7 @@
 ﻿using DB.Interfaces;
 using Delivery_App_Code_Challenge.DB.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
@@ -21,24 +22,17 @@ namespace DB.Repositories
             _dbContextFactory = dbContextFactory;
         }
 
-
-
-        public Task<(bool, string?)> AddAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool, string?)> AddRangeAsync(List<T> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool, string?)> DeleteAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, bool asNoTracking = true)
+        /// <summary>
+        /// Get a list with all the entities
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="include"></param>
+        /// <param name="asNoTracking"></param>
+        /// <returns></returns>
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>,
+                                                IOrderedQueryable<T>>? orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T,
+                                                object>>? include = null, bool asNoTracking = true)
         {
             using var context = await _dbContextFactory.CreateDbContextAsync();
             var entities = context.Set<T>();
@@ -60,24 +54,193 @@ namespace DB.Repositories
             return result;
         }
 
-        public Task<T?> GetSingleOrDefaultAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, bool asNoTracking = true)
+        /// <summary>
+        /// Get one single entity or a default value
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="include"></param>
+        /// <param name="asNoTracking"></param>
+        /// <returns></returns>
+        public async Task<T?> GetSingleOrDefaultAsync(Expression<Func<T, bool>>? predicate = null,
+                                            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
+                                            bool asNoTracking = true)
         {
-            throw new NotImplementedException();
+            using var context = await _dbContextFactory.CreateDbContextAsync();
+            var entities = context.Set<T>();
+
+            IQueryable<T> query = entities;
+
+            if (asNoTracking) query = query.AsNoTracking();
+
+            if (include != null) query = include(query);
+
+            if (predicate != null) query = query.Where(predicate);
+
+            return await query.SingleOrDefaultAsync();
         }
 
+
+        /// <summary>
+        /// Add an entity to a table
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public async Task<(bool, string?)> AddAsync(T entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+            using var context = await _dbContextFactory.CreateDbContextAsync();
+
+            bool rowsChanged = false;
+            string? errorMessage = null;
+            try
+            {
+                await context.AddAsync(entity);
+                rowsChanged = await context.SaveChangesAsync() > 0;
+            }
+            catch (Exception e) { errorMessage = e.Message; }
+            finally { await context.DisposeAsync(); }
+
+            return (rowsChanged, errorMessage);
+        }
+
+        /// <summary>
+        /// Add a range of entities to a table
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public async Task<(bool, string?)> AddRangeAsync(List<T> entities)
+        {
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+
+            using var context = await _dbContextFactory.CreateDbContextAsync();
+
+            var rowsChanged = false;
+            string? errorMessage = null;
+            try
+            {
+                await context.AddRangeAsync(entities);
+                rowsChanged = await context.SaveChangesAsync() > 0;
+            }
+            catch (Exception e) { errorMessage = e.Message; }
+            finally { await context.DisposeAsync(); }
+
+            return (rowsChanged, errorMessage);
+        }
+
+        /// <summary>
+        /// Delete all entities from a given repository
+        /// </summary>
+        /// <returns></returns>
+        public async Task<(bool, string?)> DeleteAllAsync()
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+
+            string? errorMessage = null;
+
+            try
+            {
+                var allEntities = await GetAllAsync(asNoTracking: false); // Retrieve all entities of type T
+                context.RemoveRange(allEntities); // Remove all entities from the context
+                await context.SaveChangesAsync(); // Save changes to delete the entities in the database
+            }
+            catch (Exception e)
+            {
+                errorMessage = e.Message;
+            }
+
+            return (errorMessage == null, errorMessage);
+        }
+
+        /// <summary>
+        /// Remove an entity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public (bool, string?) Remove(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+            using var context = _dbContextFactory.CreateDbContext();
+
+            bool rowsChanged = false;
+            string? errorMessage = null;
+
+            try
+            {
+                context.Remove(entity);
+                rowsChanged = context.SaveChanges() > 0;
+            }
+            catch (Exception e) { errorMessage = e.Message; }
+            finally { context.Dispose(); }
+
+            return (rowsChanged, errorMessage);
         }
 
+        /// <summary>
+        /// Remove a range of entities
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public (bool, string?) RemoveRange(List<T> entities)
         {
-            throw new NotImplementedException();
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+
+            using var context = _dbContextFactory.CreateDbContext();
+
+            bool rowsChanged = false;
+            string? errorMessage = null;
+
+            try
+            {
+                context.RemoveRange(entities);
+                rowsChanged = context.SaveChanges() > 0;
+            }
+            catch (Exception e) { errorMessage = e.Message; }
+            finally { context.Dispose(); }
+
+            return (rowsChanged, errorMessage);
         }
 
+
+        /// <summary>
+        /// Update a certain entity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public (bool, string?) Update(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+            using var context = _dbContextFactory.CreateDbContext();
+
+            var rowsChanged = false;
+            string? errorMessage = null;
+
+            try
+            {
+                context.Update(entity);
+                rowsChanged = context.SaveChanges() > 0;
+            }
+            catch (Exception e) { errorMessage = e.Message; }
+            finally { context.Dispose(); }
+
+            return (rowsChanged, errorMessage);
         }
+
     }
+
+
+
+
+
+
+
+
+
 }
