@@ -13,16 +13,18 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine("Using Connection String: " + conn);
 
 builder.Services.AddDbContext<DeliveryAppContext>(
                 options =>
                 {
                     options.UseNpgsql(conn);
-                    //}, ServiceLifetime.Scoped); // This doesn't work.
                 });
 
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 

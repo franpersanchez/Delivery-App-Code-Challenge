@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.Models
 {
-    public class UbicacionVehiculo
+    public class UbicacionVehiculo : Entity
     {
         public long VehiculoId { get; set; }
         private Vehiculo? Vehiculo { get; set; } = null!;
