@@ -19,7 +19,7 @@ namespace DB.Models
         public Vehiculo? Vehiculo { get; set; } = null!;
 
         [JsonIgnore]
-        public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
+        public ISet<Pedido> Pedidos { get; set; } = new HashSet<Pedido>();
 
     }
 }
