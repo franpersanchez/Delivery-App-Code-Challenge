@@ -16,7 +16,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             _clienteRepository = clienteRepository;
         }
 
-        [HttpPost("/client/add")]
+        [HttpPost("/clientes/crear")]
         public async Task<ActionResult<Cliente>> AddNewClient(Cliente newCliente)
         {
             if (!ModelState.IsValid)
@@ -27,7 +27,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             return CreatedAtAction(nameof(AddNewClient), new { id = newCliente.Id }, newCliente);
         }
 
-        [HttpGet("/client/get-all")]
+        [HttpGet("/clientes/muestra-todos")]
         public async Task<ActionResult<IAsyncEnumerable<Cliente>>> GetAllClients()
         {
             var result = await _clienteRepository.GetAllAsync();
@@ -37,7 +37,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
             else
             {
-                return StatusCode(204, "No clients found");
+                return StatusCode(204, "No se encontraron clientes");
             }
         }
 
