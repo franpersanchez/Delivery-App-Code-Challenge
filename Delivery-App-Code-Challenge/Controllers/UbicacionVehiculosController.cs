@@ -21,7 +21,7 @@ namespace Delivery_App_Code_Challenge.Controllers
 
         }
 
-        [HttpPut("/localization/vehicle-update-position")]
+        [HttpPut("/localizacion/vehiculo/actualiza-posicion")]
         public async Task<IActionResult> UpdateUbicacion([FromBody] RegistroUbicacion nuevaUbicacion)
         {
             try
@@ -30,7 +30,7 @@ namespace Delivery_App_Code_Challenge.Controllers
 
                 if (vehiculo == null)
                 {
-                    return NotFound("Vehículo not found");
+                    return NotFound("Vehículo asociado a la ubicación no encontrado");
                 }
 
                 // Actualizar la posición del vehículo
@@ -44,13 +44,13 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
         }
 
-        [HttpGet("/localization-history/vehicle/{vehicle_id}")]
-        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetRegistroUbicacionForVehicle(long vehicle_id)
+        [HttpGet("/localizacion-historico/vehiculo/{id}")]
+        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetRegistroUbicacionForVehicle(long id)
         {
-            var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v => v.Id == vehicle_id);
+            var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v => v.Id == id);
             if (vehicle == null)
             {
-                return NotFound("Vehiculo not found");
+                return NotFound("Vehiculo no encontrado");
             }
             else
             {
@@ -61,18 +61,18 @@ namespace Delivery_App_Code_Challenge.Controllers
                 }
                 else
                 {
-                    return NotFound("No RegistroUbicaciones for this Vehiculo yet");
+                    return NotFound("Sin Registro de Ubicaciones para este vehículo aún");
                 }
             }
         }
 
-        [HttpGet("/current-localization/vehicle/{vehicle_id}")]
-        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetCurrentRegistroUbicacionForVehicle(long vehicle_id)
+        [HttpGet("/localizacion-actual/vehiculo/{id}")]
+        public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetCurrentRegistroUbicacionForVehicle(long id)
         {
-            var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v => v.Id == vehicle_id);
+            var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v => v.Id == id);
             if (vehicle == null)
             {
-                return NotFound("Vehiculo not found");
+                return NotFound("Vehiculo no encontrado en la base de datos");
             }
             else
             {
@@ -84,7 +84,7 @@ namespace Delivery_App_Code_Challenge.Controllers
                 }
                 else
                 {
-                    return NotFound("No RegistroUbicaciones for this Vehiculo yet");
+                    return NotFound("Sin Registro de Ubicaciones para este vehículo aún");
                 }
             }
         }
