@@ -77,7 +77,6 @@ namespace Delivery_App_Code_Challenge.Controllers
         }
 
 
-
         [HttpPost("/orders/add-range")]
         public async Task<ActionResult<IEnumerable<Pedido>>> AddNewPedidoRange(List<Pedido> newPedidos)
         {
@@ -91,6 +90,21 @@ namespace Delivery_App_Code_Challenge.Controllers
 
         }
 
+        [HttpGet("/orders/get-all")]
+        public async Task<ActionResult<IEnumerable<Pedido>>> GetAllPedidos([FromQuery] EstadoPedido? estado)
+        {
+            var pedidos = new List<Pedido>();
+            if (estado == null)
+            {
+                pedidos = await _pedidoRepository.GetAllAsync();
+            }
+            else
+            {
+                pedidos = await _pedidoRepository.GetAllAsync(p => p.EstadoPedido == estado);
+            }
+            return pedidos.Any() ? pedidos : NotFound("No pedidos found");
+        }
+
         [HttpPut("/orders/{id}/update")]
         public async Task<IActionResult> UpdatePedido(int id, [FromQuery] EstadoPedido newEstado)
         {
@@ -101,7 +115,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
             pedido.EstadoPedido = newEstado;
             _pedidoRepository.Update(pedido);
-            return Ok("pedido con ID: "+id+", actualizado como: " + newEstado);
+            return Ok("pedido con ID: " + id + ", actualizado como: " + newEstado);
         }
     }
 }
