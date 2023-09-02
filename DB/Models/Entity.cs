@@ -9,7 +9,7 @@ namespace Delivery_App_Code_Challenge.DB.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [JsonIgnore] // Excludes the "id" property from JSON serialization
+        [SwaggerSchema(ReadOnly = true)]
         public virtual long Id { get; set; }
     }
 }
