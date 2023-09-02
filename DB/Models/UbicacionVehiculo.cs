@@ -13,23 +13,25 @@ namespace DB.Models
         private Vehiculo? Vehiculo { get; set; } = null!;
         public DateTime FechaUltimaUbicacion { get; set; }
 
-        private Ubicacion _UbicacionActual;
+        private long? UbicacionVehiculoCoordenadasId=null!;
 
-        public Ubicacion UbicacionActual
+        private UbicacionVehiculoCoordenadas _UbicacionVehiculoCoordenadas;
+
+        public UbicacionVehiculoCoordenadas UbicacionVehiculoCoordenadas
         {
-            get { return _UbicacionActual; }
+            get { return _UbicacionVehiculoCoordenadas; }
             set
             {
                 //if UbicacionActual is different than the one being passed
-                if (_UbicacionActual != value)
+                if (_UbicacionVehiculoCoordenadas != value)
                 {
                     //if UbicacionActual already contains a value, that value is passed to history
-                    if (_UbicacionActual != null)
+                    if (_UbicacionVehiculoCoordenadas != null)
                     {
-                        AgregarUbicacionAlHistorial(_UbicacionActual);
+                        AgregarUbicacionAlHistorial(_UbicacionVehiculoCoordenadas);
                     }
 
-                    _UbicacionActual = value;
+                    _UbicacionVehiculoCoordenadas = value;
                 }
             }
         }
@@ -37,7 +39,7 @@ namespace DB.Models
         private List<HistorialUbicacion>? historialUbicaciones { get; set; }
 
         // Método para agregar una ubicación al historial
-        private void AgregarUbicacionAlHistorial(Ubicacion ubicacion)
+        private void AgregarUbicacionAlHistorial(UbicacionVehiculoCoordenadas ubicacion)
         {
             var historialUbicacion = new HistorialUbicacion
             {
@@ -47,5 +49,13 @@ namespace DB.Models
             historialUbicaciones.Add(historialUbicacion);
         }
     }
+
+    public class UbicacionVehiculoCoordenadas : Entity
+    {
+        public float latitud { get; set; }
+        public float longitud { get; set; }
+
+    }
+
 }
 
