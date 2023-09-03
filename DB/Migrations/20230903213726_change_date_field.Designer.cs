@@ -3,6 +3,7 @@ using System;
 using DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DB.Migrations
 {
     [DbContext(typeof(DeliveryAppContext))]
-    partial class DeliveryAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230903213726_change_date_field")]
+    partial class change_date_field
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,16 +93,6 @@ namespace DB.Migrations
                             Telefono = "+34 667202163",
                             Ubicacion_latitud = "2342N",
                             Ubicacion_longitud = "324E"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Apellidos = "Acedo",
-                            Email = "martaab@gmail.com",
-                            Nombre = "Marta",
-                            Telefono = "+34 665412984",
-                            Ubicacion_latitud = "1232132N",
-                            Ubicacion_longitud = "324E"
                         });
                 });
 
@@ -149,22 +142,6 @@ namespace DB.Migrations
                             Commentarios = "Amazon, urgente!",
                             EstadoPedido = 0,
                             HoraCreacion = "2023-09-03-22:55"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            ClienteId = 2L,
-                            Commentarios = "El corte ingles",
-                            EstadoPedido = 0,
-                            HoraCreacion = "2023-09-01-15:55"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            ClienteId = 2L,
-                            Commentarios = "Fnac",
-                            EstadoPedido = 0,
-                            HoraCreacion = "2023-08-03-23:55"
                         });
                 });
 
@@ -217,20 +194,6 @@ namespace DB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vehiculos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Matricula = "418GZK",
-                            NombreConductor = "Ivan Ruiz"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Matricula = "345HJU",
-                            NombreConductor = "Lolo Sanchez"
-                        });
                 });
 
             modelBuilder.Entity("DB.Models.Envio", b =>

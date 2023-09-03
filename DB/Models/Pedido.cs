@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Delivery_App_Code_Challenge.DB.Models
@@ -8,16 +9,18 @@ namespace Delivery_App_Code_Challenge.DB.Models
         [JsonIgnore]
         public EstadoPedido EstadoPedido { get; set; } = EstadoPedido.Pendiente;
 
+        [Required]
         public string? Commentarios { get; set; }
 
-
+        [Required]
         //la ubicación (destino) se obtiene a partir de la ubicación del cliente
         public long ClienteId { get; set; }
 
         [JsonIgnore]
         public Cliente? Cliente { get; set; } = null!;
 
-        public DateTime HoraCreacion { get; set; }        
+        [Required]
+        public string HoraCreacion { get; set; }        
 
     }
 

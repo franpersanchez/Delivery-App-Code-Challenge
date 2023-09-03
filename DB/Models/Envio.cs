@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -11,8 +12,10 @@ namespace DB.Models
 {
     public class Envio : Entity
     {
+        [Required]
         public string? ZonaPostal { get; set; }
 
+        [Required]
         public long VehiculoId { get; set; }
 
         [JsonIgnore]
