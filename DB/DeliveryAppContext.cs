@@ -20,8 +20,7 @@ namespace DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var t = new System.DateTime();
-            t = System.DateTime.Now;
+
             var user1 = new Cliente { Id = 1, Nombre = "Fran", Apellidos = "Perez", Telefono = "+34 667202163", Email = "franpersanchez@gmail.com", Ubicacion_latitud = "2342N", Ubicacion_longitud = "324E" };
             var user2 = new Cliente { Id = 2, Nombre = "Marta", Apellidos = "Acedo", Telefono = "+34 665412984", Email = "martaab@gmail.com", Ubicacion_latitud = "1232132N", Ubicacion_longitud = "324E" };
 
@@ -38,9 +37,6 @@ namespace DB
 
             base.OnModelCreating(modelBuilder);
         }
-        //"2023-09-03T21:24:23.506Z"
-
-
 
     }
 }

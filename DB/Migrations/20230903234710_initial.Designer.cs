@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DB.Migrations
 {
     [DbContext(typeof(DeliveryAppContext))]
-    [Migration("20230902173342_change_envios")]
-    partial class change_envios
+    [Migration("20230903234710_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,10 @@ namespace DB.Migrations
                     b.Property<long>("VehiculoId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("ZonaPostal")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("VehiculoId");
@@ -52,26 +56,54 @@ namespace DB.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Apellidos")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("Ubicacion_latitud")
-                        .HasColumnType("real");
+                    b.Property<string>("Ubicacion_latitud")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<float>("Ubicacion_longitud")
-                        .HasColumnType("real");
+                    b.Property<string>("Ubicacion_longitud")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Apellidos = "Perez",
+                            Email = "franpersanchez@gmail.com",
+                            Nombre = "Fran",
+                            Telefono = "+34 667202163",
+                            Ubicacion_latitud = "2342N",
+                            Ubicacion_longitud = "324E"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Apellidos = "Acedo",
+                            Email = "martaab@gmail.com",
+                            Nombre = "Marta",
+                            Telefono = "+34 665412984",
+                            Ubicacion_latitud = "1232132N",
+                            Ubicacion_longitud = "324E"
+                        });
                 });
 
             modelBuilder.Entity("Delivery_App_Code_Challenge.DB.Models.Pedido", b =>
@@ -86,6 +118,7 @@ namespace DB.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Commentarios")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long?>("EnvioId")
@@ -94,8 +127,9 @@ namespace DB.Migrations
                     b.Property<int>("EstadoPedido")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("HoraCreacion")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("HoraCreacion")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<long?>("VehiculoId")
                         .HasColumnType("bigint");
@@ -109,6 +143,32 @@ namespace DB.Migrations
                     b.HasIndex("VehiculoId");
 
                     b.ToTable("Pedidos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            ClienteId = 1L,
+                            Commentarios = "Amazon, urgente!",
+                            EstadoPedido = 0,
+                            HoraCreacion = "2023-09-03-22:55"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            ClienteId = 2L,
+                            Commentarios = "El corte ingles",
+                            EstadoPedido = 0,
+                            HoraCreacion = "2023-09-01-15:55"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            ClienteId = 2L,
+                            Commentarios = "Fnac",
+                            EstadoPedido = 0,
+                            HoraCreacion = "2023-08-03-23:55"
+                        });
                 });
 
             modelBuilder.Entity("Delivery_App_Code_Challenge.DB.Models.RegistroUbicacion", b =>
@@ -119,8 +179,9 @@ namespace DB.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("FechaRegistro")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Ubicacion_latitud")
                         .IsRequired()
@@ -149,14 +210,30 @@ namespace DB.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Matricula")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NombreConductor")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Vehiculos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Matricula = "418GZK",
+                            NombreConductor = "Ivan Ruiz"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Matricula = "345HJU",
+                            NombreConductor = "Lolo Sanchez"
+                        });
                 });
 
             modelBuilder.Entity("DB.Models.Envio", b =>
