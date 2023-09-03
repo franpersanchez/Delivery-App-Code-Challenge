@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Delivery-App-Code-Challenge\Delivery-App-Code-Challenge.csproj" />
+  </ItemGroup>
+
 </Project>
