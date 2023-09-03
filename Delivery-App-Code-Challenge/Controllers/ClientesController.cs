@@ -11,6 +11,7 @@ namespace Delivery_App_Code_Challenge.Controllers
     {
         private readonly IRepository<Cliente> _clienteRepository;
 
+
         public ClientesController(IRepository<Cliente> clienteRepository)
         {
             _clienteRepository = clienteRepository;
@@ -24,9 +25,9 @@ namespace Delivery_App_Code_Challenge.Controllers
         [HttpPost("/clientes/crea")]
         public async Task<ActionResult<Cliente>> AddNewClient(Cliente nuevoCliente)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || nuevoCliente==null)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
             await _clienteRepository.AddAsync(nuevoCliente);
             return CreatedAtAction(nameof(AddNewClient), new { id = nuevoCliente.Id }, nuevoCliente);
@@ -46,7 +47,7 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
             else
             {
-                return StatusCode(204, "No se encontraron clientes");
+                return NotFound("No se encontraron clientes");
             }
         }
 

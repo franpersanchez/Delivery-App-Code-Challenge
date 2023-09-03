@@ -19,10 +19,10 @@ namespace Delivery_App_Code_Challenge.DB.Models
         public string? Email { get; set; }
 
         [Required]
-        public string Ubicacion_latitud { get; set; }
+        public string? Ubicacion_latitud { get; set; }
 
         [Required]
-        public string Ubicacion_longitud { get; set; }
+        public string? Ubicacion_longitud { get; set; }
 
         [JsonIgnore]
         public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
