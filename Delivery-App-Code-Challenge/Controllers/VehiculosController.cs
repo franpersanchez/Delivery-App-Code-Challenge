@@ -49,7 +49,8 @@ namespace Delivery_App_Code_Challenge.Controllers
         [HttpGet("/vehiculo/muestra-todos")]
         public async Task<ActionResult<IEnumerable<Vehiculo>>> GetAllVehiculos()
         {
-            var vehiculos = await _vehiculoRepository.GetAllAsync();
+            // var vehiculos = await _vehiculoRepository.GetAllAsync();
+            var vehiculos = _deliveryAppContext.Vehiculos.Include(v => v.Envios).ToList();
 
          if (vehiculos.Any())
             {

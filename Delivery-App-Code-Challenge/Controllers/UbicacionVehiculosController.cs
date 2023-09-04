@@ -59,16 +59,17 @@ namespace Delivery_App_Code_Challenge.Controllers
         public async Task<ActionResult<IEnumerable<RegistroUbicacion>>> GetRegistroUbicacionForVehicle(long id)
         {
             var vehicle = await _vehiculoRepository.GetSingleOrDefaultAsync(v => v.Id == id);
+
             if (vehicle == null)
             {
                 return NotFound("Vehiculo no encontrado");
             }
             else
             {
-                var registroUbicacion = vehicle.RegistroUbicaciones;
-                if (registroUbicacion.Any())
+                var registros = await _registroUbicacionRepository.GetAllAsync(r => r.VehiculoId == id);
+                if (registros.Any())
                 {
-                    return registroUbicacion.ToList();
+                    return registros;
                 }
                 else
                 {
@@ -92,10 +93,10 @@ namespace Delivery_App_Code_Challenge.Controllers
             }
             else
             {
-                var registroUbicacion = vehicle.RegistroUbicaciones;
-                if (registroUbicacion.Any())
+                var registros = await _registroUbicacionRepository.GetAllAsync(r => r.VehiculoId == id);
+                if (registros.Any())
                 {
-                    var registroMasReciente = registroUbicacion.OrderByDescending(r => r.FechaRegistro).First();
+                    var registroMasReciente = registros.OrderByDescending(r => r.FechaRegistro).First();
                     return Ok(registroMasReciente);
                 }
                 else
