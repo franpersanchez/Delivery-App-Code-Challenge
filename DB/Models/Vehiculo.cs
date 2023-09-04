@@ -1,4 +1,6 @@
 ﻿using DB;
+using DB.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -12,10 +14,10 @@ namespace Delivery_App_Code_Challenge.DB.Models
         [Required]
         public string? NombreConductor { get; set; }
 
-        [JsonIgnore]
-        public ICollection<Pedido>? Pedidos { get; set; } = new List<Pedido>();
+        [ReadOnly(true)]
+        public ICollection<Envio>? Envios { get; set; } = new List<Envio>();
 
-        [JsonIgnore]
+        
         public ICollection<RegistroUbicacion> RegistroUbicaciones {  get; set; } = new List<RegistroUbicacion>();
     }
 

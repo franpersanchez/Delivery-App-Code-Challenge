@@ -1,7 +1,9 @@
-﻿using DB.Interfaces;
+﻿using DB;
+using DB.Interfaces;
 using DB.Models;
 using Delivery_App_Code_Challenge.DB.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Entity;
 
 namespace Delivery_App_Code_Challenge.Controllers
 {
@@ -11,10 +13,16 @@ namespace Delivery_App_Code_Challenge.Controllers
     public class VehiculosController : ControllerBase
     {
         private readonly IRepository<Vehiculo> _vehiculoRepository;
+        private readonly IRepository<RegistroUbicacion> _registroUbicacionesRepository;
+        private readonly DeliveryAppContext _deliveryAppContext;
 
-        public VehiculosController(IRepository<Vehiculo> vehiculoRepository)
+        public VehiculosController( IRepository<Vehiculo> vehiculoRepository,
+                                    IRepository<RegistroUbicacion> registroUbicacionesRepository,
+                                    DeliveryAppContext deliveryAppContext)
         {
             _vehiculoRepository = vehiculoRepository;
+            _registroUbicacionesRepository = registroUbicacionesRepository;
+            _deliveryAppContext = deliveryAppContext;
         }
 
         /// <summary>
@@ -42,8 +50,10 @@ namespace Delivery_App_Code_Challenge.Controllers
         public async Task<ActionResult<IEnumerable<Vehiculo>>> GetAllVehiculos()
         {
             var vehiculos = await _vehiculoRepository.GetAllAsync();
-            if (vehiculos.Any())
+
+         if (vehiculos.Any())
             {
+
                 return Ok(vehiculos);
             }
             else
