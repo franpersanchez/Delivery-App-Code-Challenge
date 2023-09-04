@@ -49,7 +49,7 @@ docker-compose up
 Accedidiendo a la url: http://localhost:8080/swagger/index.html tendrá acceso a la GUI de documentación de Swagger con la implementación de los requisitos del Nivel 1.
 
 - Se ha creado una solución que consta del **proyecto principal** (API), una base de datos(**BD**) en PostgresQL, que es una libreria de clases donde se encuentran los modelos, Interfaces y Repositorios(Servicios) y un proyecto de **Tests** que testean los controladores de la API. Se ha adjuntado un test completo del controlador ClientesController a modo de ejemplo de testing.
-- Se ha optado por reducir la complejidad de los modelos, por ejemplo, pasando un string en lugar de un objeto DateTime (por problemas de escritura en PostgresQL) para la información de la fecha por cada registro de ubicación.
+- Se ha optado por reducir la complejidad de los modelos.
 - La complejidad total del modelo de datos se puede incrementar aumentando la cantidad de abstracciones y según consideraciones del propio modelo (hacer un objeto solo para parámetros de ubicación,...etc.).
 
 Se han creado diferentes secciones (controllers) relacionados con cada lógica:
