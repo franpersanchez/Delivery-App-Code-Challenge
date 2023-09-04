@@ -2,74 +2,89 @@
 
 # Escenario
 
-Una empresa de reparto de comida ha creado una aplicaciÛn para sus
+Una empresa de reparto de comida ha creado una aplicaci√≥n para sus
 clientes y necesita poder rastrear en tiempo real donde se encuentra cada
-pedido y el vehÌculo/conductor que lo lleva.
+pedido y el veh√≠culo/conductor que lo lleva.
 Como ya disponen de varias aplicaciones, tanto de los conductores como
 de los clientes, nos piden crear una API con la que puedan:
 
-ï AÒadir nuevos pedidos
+‚Ä¢ A√±adir nuevos pedidos
 
-ï Actualizar la posiciÛn del pedido (cualquier sistema de
-coordenadas valdr·)
+‚Ä¢ Actualizar la posici√≥n del pedido (cualquier sistema de
+coordenadas valdr√°)
 
-ï Obtener la posiciÛn del pedido y el vehÌculo mediante el n˙mero de
+‚Ä¢ Obtener la posici√≥n del pedido y el veh√≠culo mediante el n√∫mero de
 pedido
 
-- ## Nivel 1 ñ Modelado
+- ## Nivel 1 ‚Äì Modelado
 
 Crear una API, asi como el modelo de datos, para insertar, actualizar y
-obtener la ubicaciÛn de los vehÌculos.
-Adem·s habr· que aÒadir a la API la posibilidad de aÒadir o borrar nuevos
-pedidos a los vehÌculos existentes.
+obtener la ubicaci√≥n de los veh√≠culos.
+Adem√°s habr√° que a√±adir a la API la posibilidad de a√±adir o borrar nuevos
+pedidos a los veh√≠culos existentes.
 Hay que tener en cuenta que el modelo de datos debe permitir actualizar
-la ubicaciÛn de cada vehÌculo y guardar su historial de ubicaciÛn.
+la ubicaci√≥n de cada veh√≠culo y guardar su historial de ubicaci√≥n.
 
-- ## Nivel 2 - ComunicaciÛn
+- ## Nivel 2 - Comunicaci√≥n
 
 En vez de obligar a las aplicaciones a realizar consultas o polling sobre la
-posiciÛn de cada vehÌculo/pedido, se debe aÒadir alg˙n metodo para
+posici√≥n de cada veh√≠culo/pedido, se debe a√±adir alg√∫n metodo para
 notificar a las partes interesadas en tiempo real.
 
-- ## Nivel 3 ñ Escalabilidad
+- ## Nivel 3 ‚Äì Escalabilidad
 
-Llegado a este nivel preveemos que vamos a tener muchos vehÌculos y
+Llegado a este nivel preveemos que vamos a tener muchos veh√≠culos y
 pedidos, hay que implementar elementos para asegurar la escalabilidad
-de la aplicaciÛn y optimizar las llamadas.
+de la aplicaci√≥n y optimizar las llamadas.
 
-# Comentarios sobre la SoluciÛn:
+# Comentarios sobre la Soluci√≥n NIVEL 1:
 
-La soluciÛn se presenta en un entorno dockerizado. Simplemente bastar· con clonar el cÛdigo en un repositorio local y tener instalado Docker en el ordenador.
-Una vez en la carpeta principal del proyecto, bastar· con correr en la linea de comandos:
+La soluci√≥n se presenta en un entorno dockerizado. Simplemente bastar√° con clonar el c√≥digo en un repositorio local y tener instalado Docker en el ordenador.
+Una vez en la carpeta principal del proyecto, bastar√° con correr en la linea de comandos:
 
 ```
 docker-compose up
 ```
 
-Accedidiendo a la url: http://localhost:8080/swagger/index.html tendr· acceso a la GUI de documentaciÛn de Swagger con la implementaciÛn de los requisitos del Nivel 1.
+Accedidiendo a la url: http://localhost:8080/swagger/index.html tendr√° acceso a la GUI de documentaci√≥n de Swagger con la implementaci√≥n de los requisitos del Nivel 1.
 
-Se han creado diferentes secciones (controllers) relacionados con cada lÛgica:
+- Se ha creado una soluci√≥n que consta del **proyecto principal** (API), una base de datos(**BD**) en PostgresQL, que es una libreria de clases donde se encuentran los modelos, Interfaces y Repositorios(Servicios) y un proyecto de **Tests** que testean los controladores de la API. Se ha adjuntado un test completo del controlador ClientesController a modo de ejemplo de testing.
+- Se ha optado por reducir la complejidad de los modelos, por ejemplo, pasando un string en lugar de un objeto DateTime (por problemas de escritura en PostgresQL) para la informaci√≥n de la fecha por cada registro de ubicaci√≥n.
+- La complejidad total del modelo de datos se puede incrementar aumentando la cantidad de abstracciones y seg√∫n consideraciones del propio modelo (hacer un objeto solo para par√°metros de ubicaci√≥n,...etc.).
+
+Se han creado diferentes secciones (controllers) relacionados con cada l√≥gica:
 
 - ### Clientes
 	- /clientes/crea -> Crea un nuevo cliente en la BD.
 	- /clientes/muestra-todos -> Muestra todos los clientes de la BD.
 - ### Pedidos
-	Los Pedidos est·n sujetos a la existencia de un Cliente. Un Pedido contiene informaciÛn referente al cliente, comentarios y la fecha-hora de su creaciÛn.
+	Los Pedidos est√°n sujetos a la existencia de un Cliente. Un Pedido contiene informaci√≥n referente al cliente, comentarios y la fecha-hora de su creaci√≥n.
 	- /pedidos/crea -> Crea un nuevo Pedido en la BD.
 	- /pedidos/crea-rango -> Crea una serie de Pedidos a la vez.
 	- /pedidos/muestra-todos -> Muestra todos los Envios de la BD.
 	- /pedidos/{id}/actualiza-estado -> Actualiza el estado de un Pedido: pendiente(default), aceptado, pagado, enviado, entregado.
 - ### Envios
-	Los Envios est·n sujetos a la existencia de un Pedido y de un Vehiculo que los transporte. No pueden contener Pedidos duplicados. Cuando un Pedido se entrega, desaparece del objeto Envio.
+	Los Envios est√°n sujetos a la existencia de un Pedido y de un Vehiculo que los transporte. No pueden contener Pedidos duplicados. Cuando un Pedido se entrega, desaparece del objeto Envio. Pueden contener muchos Pedidos.
 	- /envio/crea -> Crea un nuevo Envio en la BD.
 	- /envio/muestra-todos -> Muestra todos los Envios de la BD.
 	- /pedido/{pedido_id}/a-envio/{envio_id} ->asigna un Pedido a un Envio (puede albergar muchos Pedidos diferentes).
 - ### SeguimientoPedidos
 	- /seguimiento-pedido/{id} -> Permite conocer el historial de Ubicaciones (por fecha) de un Pedido en concreto.
 - ### UbicacionVehiculos
-	- /localizacion/vehiculo/actualiza-posicion -> Actualiza la posiciÛn de un vehiculo determinado en una fecha-hora.
-	- /localizacion-historico/vehiculo/{id} -> permite conocer el historial de posiciones de un Vehiculo determinado, ordenado de mas reciente a m·s antigua.
-	- /localizacion-actual/vehiculo/{id} -> permite conocer la posiciÛn mas reciente de un Vehiculo determinado.
+	- /localizacion/vehiculo/actualiza-posicion -> Actualiza la posici√≥n de un vehiculo determinado en una fecha-hora.
+	- /localizacion-historico/vehiculo/{id} -> permite conocer el historial de posiciones de un Vehiculo determinado, ordenado de mas reciente a m√°s antigua.
+	- /localizacion-actual/vehiculo/{id} -> permite conocer la posici√≥n mas reciente de un Vehiculo determinado.
 - ### Vehiculos
 	- /vehiculo/crea -> Crea un nuevo Vehiculo en la BD.
 	- /vehiculo/muestra-todos -> Muestra todos los Vehiculos de la BD.
+
+# Comentarios sobre la Soluci√≥n NIVEL 2:
+Para implementar la comunicaci√≥n en tiempo real en la API, podemos utilizar tecnolog√≠a como WebSockets junto con un sistema de mensajer√≠a o colas para notificar a las partes interesadas sobre la ubicaci√≥n de los veh√≠culos y los cambios en los pedidos. La aplicaci√≥n, al estar en ASP.NET, ser√≠a buena idea aprovechar las ventajas de f√°cil integraci√≥n que ofrece por otro lado SignalR, una biblioteca que simplifica la implementaci√≥n de comunicaci√≥n en tiempo real y proporciona abstracciones para WebSocket. Mediante SignalR, podremos establecer canales de comunicaci√≥n bidireccional entre el servidor(nuestra API) y los clientes cuando estos se conectan a la API mediante WebSockets o SignalR.
+
+En el momento que se produzca un cambio (una actualizaci√≥n de ubicaci√≥n de un vehiculo o el estado de un pedido, podremos notificar este cambio a trav√©s del canal abierto hasta el cliente. En el lado del cliente, deber√° estar implementado el manejo de eventos WebSocket o SignalR para procesar los mensajes entrantes y actualizar la informaci√≥n en tiempo real en la interfaz de usuario.
+
+# Comentarios sobre la Soluci√≥n NIVEL 3:
+Para asegurar la escalabilidad y asegurar las llamdas a nuestra aplicaci√≥n tendremos que pensar en formas que por un lado recorten las mediciones de latencia (mejora de consultas en la base de datos como indexado, etc) en las respuestas y tambi√©n otras que aseguren la disponibilidad del servidor sin que ocurran cuellos de botella.
+Para permitir la escalabilidad lo mejor ser√≠a afrontar una soluci√≥n basada en arquitectura distribuida (varios servidores repartiendo la carga total).
+Tambi√©n se puede hacer uso de event bus o distribuidores de cargas para distribuir las solicitudes de manera equitativa entre los servidores disponibles.
+Tambi√©n podemos hacer uso de la Memoria Cach√©, para optimizar las llamadas y reducir la carga de la base de datos. Esto permitir√° almacenar temporalmente datos frecuentemente accedidos, como la ubicaci√≥n de los veh√≠culos, para recuperarlos de manera m√°s r√°pida.
