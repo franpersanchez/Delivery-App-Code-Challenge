@@ -124,9 +124,8 @@ namespace DB.Migrations
                     b.Property<int>("EstadoPedido")
                         .HasColumnType("integer");
 
-                    b.Property<string>("HoraCreacion")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("HoraCreacion")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long?>("VehiculoId")
                         .HasColumnType("bigint");
@@ -148,7 +147,7 @@ namespace DB.Migrations
                             ClienteId = 1L,
                             Commentarios = "Amazon, urgente!",
                             EstadoPedido = 0,
-                            HoraCreacion = "2023-09-03-22:55"
+                            HoraCreacion = new DateTime(2023, 9, 4, 10, 22, 29, 178, DateTimeKind.Utc).AddTicks(5370)
                         },
                         new
                         {
@@ -156,7 +155,7 @@ namespace DB.Migrations
                             ClienteId = 2L,
                             Commentarios = "El corte ingles",
                             EstadoPedido = 0,
-                            HoraCreacion = "2023-09-01-15:55"
+                            HoraCreacion = new DateTime(2023, 9, 4, 10, 22, 29, 178, DateTimeKind.Utc).AddTicks(5372)
                         },
                         new
                         {
@@ -164,7 +163,7 @@ namespace DB.Migrations
                             ClienteId = 2L,
                             Commentarios = "Fnac",
                             EstadoPedido = 0,
-                            HoraCreacion = "2023-08-03-23:55"
+                            HoraCreacion = new DateTime(2023, 9, 4, 10, 22, 29, 178, DateTimeKind.Utc).AddTicks(5373)
                         });
                 });
 
@@ -176,9 +175,8 @@ namespace DB.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("FechaRegistro")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Ubicacion_latitud")
                         .IsRequired()

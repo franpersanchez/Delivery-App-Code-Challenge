@@ -20,7 +20,7 @@ namespace Delivery_App_Code_Challenge.DB.Models
         public Cliente? Cliente { get; set; } = null!;
 
         [Required]
-        public string HoraCreacion { get; set; }        
+        public DateTime HoraCreacion { get; set; }        
 
     }
 

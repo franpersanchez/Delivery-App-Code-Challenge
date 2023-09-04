@@ -24,9 +24,9 @@ namespace DB
             var user1 = new Cliente { Id = 1, Nombre = "Fran", Apellidos = "Perez", Telefono = "+34 667202163", Email = "franpersanchez@gmail.com", Ubicacion_latitud = "2342N", Ubicacion_longitud = "324E" };
             var user2 = new Cliente { Id = 2, Nombre = "Marta", Apellidos = "Acedo", Telefono = "+34 665412984", Email = "martaab@gmail.com", Ubicacion_latitud = "1232132N", Ubicacion_longitud = "324E" };
 
-            var pedido1 = new Pedido { Id = 1, ClienteId = 1, Commentarios = "Amazon, urgente!", HoraCreacion = "2023-09-03-22:55", EstadoPedido = EstadoPedido.Pendiente };
-            var pedido2 = new Pedido { Id = 2, ClienteId = 2, Commentarios = "El corte ingles", HoraCreacion = "2023-09-01-15:55", EstadoPedido = EstadoPedido.Pendiente };
-            var pedido3 = new Pedido { Id = 3, ClienteId = 2, Commentarios = "Fnac", HoraCreacion = "2023-08-03-23:55", EstadoPedido = EstadoPedido.Pendiente };
+            var pedido1 = new Pedido { Id = 1, ClienteId = 1, Commentarios = "Amazon, urgente!", HoraCreacion=DateTime.UtcNow, EstadoPedido = EstadoPedido.Pendiente };
+            var pedido2 = new Pedido { Id = 2, ClienteId = 2, Commentarios = "El corte ingles", HoraCreacion =  DateTime.UtcNow, EstadoPedido = EstadoPedido.Pendiente };
+            var pedido3 = new Pedido { Id = 3, ClienteId = 2, Commentarios = "Fnac", HoraCreacion = DateTime.UtcNow, EstadoPedido = EstadoPedido.Pendiente };
 
             var vehiculo1 = new Vehiculo { Id = 1, Matricula = "418GZK", NombreConductor = "Ivan Ruiz" };
             var vehiculo2 = new Vehiculo { Id = 2, Matricula = "345HJU", NombreConductor = "Lolo Sanchez" };

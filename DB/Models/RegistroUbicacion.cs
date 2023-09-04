@@ -8,7 +8,7 @@ namespace Delivery_App_Code_Challenge.DB.Models
     public class RegistroUbicacion : Entity
     {
         [Required]
-        public string FechaRegistro { get; set; }
+        public DateTime FechaRegistro { get; set; }
 
         [Required]
         public string Ubicacion_longitud {  get; set; }

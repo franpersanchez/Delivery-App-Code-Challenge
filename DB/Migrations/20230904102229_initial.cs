@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -71,7 +72,7 @@ namespace DB.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FechaRegistro = table.Column<string>(type: "text", nullable: false),
+                    FechaRegistro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Ubicacion_longitud = table.Column<string>(type: "text", nullable: false),
                     Ubicacion_latitud = table.Column<string>(type: "text", nullable: false),
                     VehiculoId = table.Column<long>(type: "bigint", nullable: false)
@@ -96,7 +97,7 @@ namespace DB.Migrations
                     EstadoPedido = table.Column<int>(type: "integer", nullable: false),
                     Commentarios = table.Column<string>(type: "text", nullable: false),
                     ClienteId = table.Column<long>(type: "bigint", nullable: false),
-                    HoraCreacion = table.Column<string>(type: "text", nullable: false),
+                    HoraCreacion = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EnvioId = table.Column<long>(type: "bigint", nullable: true),
                     VehiculoId = table.Column<long>(type: "bigint", nullable: true)
                 },
@@ -144,9 +145,9 @@ namespace DB.Migrations
                 columns: new[] { "Id", "ClienteId", "Commentarios", "EnvioId", "EstadoPedido", "HoraCreacion", "VehiculoId" },
                 values: new object[,]
                 {
-                    { 1L, 1L, "Amazon, urgente!", null, 0, "2023-09-03-22:55", null },
-                    { 2L, 2L, "El corte ingles", null, 0, "2023-09-01-15:55", null },
-                    { 3L, 2L, "Fnac", null, 0, "2023-08-03-23:55", null }
+                    { 1L, 1L, "Amazon, urgente!", null, 0, new DateTime(2023, 9, 4, 10, 22, 29, 178, DateTimeKind.Utc).AddTicks(5370), null },
+                    { 2L, 2L, "El corte ingles", null, 0, new DateTime(2023, 9, 4, 10, 22, 29, 178, DateTimeKind.Utc).AddTicks(5372), null },
+                    { 3L, 2L, "Fnac", null, 0, new DateTime(2023, 9, 4, 10, 22, 29, 178, DateTimeKind.Utc).AddTicks(5373), null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -173,6 +174,8 @@ namespace DB.Migrations
                 name: "IX_RegistroUbicacion_VehiculoId",
                 table: "RegistroUbicacion",
                 column: "VehiculoId");
+
+            migrationBuilder.Sql(@"ALTER TABLE ""RegistroUbicacion"" ALTER COLUMN ""FechaRegistro"" TYPE timestamp with time zone USING ""FechaRegistro""::timestamp with time zone;");
         }
 
         /// <inheritdoc />
