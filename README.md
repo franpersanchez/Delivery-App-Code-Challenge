@@ -56,6 +56,8 @@ Se ha creado una solución que consta de 3 partes integradas:
 Se ha optado por reducir la complejidad de los modelos.
 La complejidad total del modelo de datos se puede incrementar aumentando la cantidad de abstracciones y según consideraciones del propio modelo (hacer un objeto solo para parámetros de ubicación,...etc.).
 
+La base de datos se inicializa con algunos datos por defecto (clientes, pedidos y vehículos)
+
 Se han creado diferentes secciones (controllers) relacionados con cada lógica:
 
 - ### Clientes
