@@ -51,7 +51,7 @@ namespace Delivery_App_Code_Challenge.Controllers
                 }
 
                 // Obtener el vehículo asociado al envío
-                var vehiculo = envio.Vehiculo;
+                var vehiculo = envio.VehiculoId;
 
                 if (vehiculo == null)
                 {
@@ -59,11 +59,9 @@ namespace Delivery_App_Code_Challenge.Controllers
                 }
 
                 // Obtener la lista de registros de ubicación del vehículo ordenada por fecha de registro
-                var registrosUbicacion = vehiculo.RegistroUbicaciones
-                    .OrderByDescending(r => r.FechaRegistro)
-                    .ToList();
+                var registros = await _registroUbicacionRepository.GetAllAsync(v=>v.VehiculoId==vehiculo);
 
-                return Ok(registrosUbicacion);
+                return Ok(registros);
             }
             catch (Exception ex)
             {
