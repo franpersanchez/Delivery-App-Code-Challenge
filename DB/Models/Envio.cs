@@ -21,8 +21,7 @@ namespace DB.Models
         [JsonIgnore]
         public Vehiculo? Vehiculo { get; set; } = null!;
 
-        [JsonIgnore]
-        public ISet<Pedido> Pedidos { get; set; } = new HashSet<Pedido>();
+        public ISet<Pedido> Pedidos { get; private set; } = new HashSet<Pedido>();
 
     }
 }

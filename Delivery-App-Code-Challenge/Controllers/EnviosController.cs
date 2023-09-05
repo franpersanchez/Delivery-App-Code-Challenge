@@ -1,4 +1,5 @@
-﻿using DB.Interfaces;
+﻿using DB;
+using DB.Interfaces;
 using DB.Models;
 using Delivery_App_Code_Challenge.DB.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,16 @@ namespace Delivery_App_Code_Challenge.Controllers
 
         private readonly IRepository<Pedido> _pedidoRepository;
         private readonly IRepository<Envio> _envioRepository;
+        private readonly DeliveryAppContext _appRepo;
+
         public EnviosController(IRepository<Pedido> pedidoRepository,
-                                IRepository<Envio> envioRepository
+                                IRepository<Envio> envioRepository,
+                                DeliveryAppContext appRepo
                                 )
         {
             _pedidoRepository = pedidoRepository;
             _envioRepository = envioRepository;
+            _appRepo = appRepo;
 
         }
 
@@ -45,7 +50,7 @@ namespace Delivery_App_Code_Challenge.Controllers
         [HttpGet("/envio/muestra-todos")]
         public async Task<ActionResult<IEnumerable<Envio>>> GetAllEnvios()
         {
-            var envios = await _envioRepository.GetAllAsync();
+            var envios = await _appRepo.Envios.Include(e=>e.Pedidos).ToListAsync();
             if (envios.Any())
             {
                 return Ok(envios);
