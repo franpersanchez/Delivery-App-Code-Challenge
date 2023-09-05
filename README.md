@@ -84,6 +84,15 @@ Se han creado diferentes secciones (controllers) relacionados con cada lógica:
 	- /vehiculo/crea -> Crea un nuevo Vehiculo en la BD.
 	- /vehiculo/muestra-todos -> Muestra todos los Vehiculos de la BD.
 
+### ¿Cómo usar la API para confirmar los casos de uso?
+1. Elige uno de los pedidos ya creados por uno de los 2 clientes ya creados.
+2. Crea un nuevo Envio. El envio lo define su vehiculo asignado y la zona postal donde se repartirán los pedidos asociados al envio.
+3. Asigna el pedido elegido al envio creado (los envios continen muchos Pedidos y son transportados por los Vehiculos, los cuales tienen el sistema de posicionamiento.)
+4.  Comienza la ruta. Da una posición al vehiculo que transporta el envio.
+5.  El cliente, mediante su número de pedido, puede comprobar dónde se encuentra.
+6.  La empresa, puede comprobar donde se encuentra un Vehiculo o el historial de ubicaciones.
+
+
 # Comentarios sobre la Solución NIVEL 2:
 Para implementar la comunicación en tiempo real en la API, podemos utilizar tecnología como WebSockets junto con un sistema de mensajería o colas para notificar a las partes interesadas sobre la ubicación de los vehículos y los cambios en los pedidos. La aplicación, al estar en ASP.NET, sería buena idea aprovechar las ventajas de fácil integración que ofrece por otro lado SignalR, una biblioteca que simplifica la implementación de comunicación en tiempo real y proporciona abstracciones para WebSocket. Mediante SignalR, podremos establecer canales de comunicación bidireccional entre el servidor(nuestra API) y los clientes cuando estos se conectan a la API mediante WebSockets o SignalR.
 
