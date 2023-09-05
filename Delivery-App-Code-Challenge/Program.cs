@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;
 using DB;
 using DB.Interfaces;
 using DB.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Accelergreat.EntityFramework;
 using Microsoft.EntityFrameworkCore.Internal;
-using System.Data.Entity.Infrastructure;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

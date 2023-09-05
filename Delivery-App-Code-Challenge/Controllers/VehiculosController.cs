@@ -3,7 +3,7 @@ using DB.Interfaces;
 using DB.Models;
 using Delivery_App_Code_Challenge.DB.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Entity;
+
 
 namespace Delivery_App_Code_Challenge.Controllers
 {
@@ -49,8 +49,7 @@ namespace Delivery_App_Code_Challenge.Controllers
         [HttpGet("/vehiculo/muestra-todos")]
         public async Task<ActionResult<IEnumerable<Vehiculo>>> GetAllVehiculos()
         {
-            // var vehiculos = await _vehiculoRepository.GetAllAsync();
-            var vehiculos = _deliveryAppContext.Vehiculos.Include(v => v.Envios).ToList();
+            var vehiculos = await _deliveryAppContext.Vehiculos.Include(v => v.Envios).Include(v=>v.RegistroUbicaciones).ToListAsync();
 
          if (vehiculos.Any())
             {
